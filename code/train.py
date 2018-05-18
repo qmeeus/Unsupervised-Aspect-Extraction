@@ -2,13 +2,11 @@
 #  -*- coding: utf-8  -*-
 
 import argparse
-import codecs
 import logging
-from time import time
-
 import numpy as np
-
+from time import time
 import utils as U
+import codecs
 
 logging.basicConfig(
     # filename='out.log',
@@ -23,7 +21,7 @@ parser.add_argument("-o", "--out-dir", dest="out_dir_path", type=str, metavar='<
                     help="The path to the output directory")
 parser.add_argument("-e", "--embdim", dest="emb_dim", type=int, metavar='<int>', default=200,
                     help="Embeddings dimension (default=200)")
-parser.add_argument("-b", "--batch-size", dest="batch_size", type=int, metavar='<int>', default=50,
+parser.add_argument("-b", "--batch-size", dest="batch_size", type=int, metavar='<int>', default=25,
                     help="Batch size (default=50)")
 parser.add_argument("-v", "--vocab-size", dest="vocab_size", type=int, metavar='<int>', default=9000,
                     help="Vocab size. '0' means no limit (default=9000)")
@@ -153,8 +151,8 @@ for ii in range(args.epochs):
 
     if loss < min_loss:
         min_loss = loss
-        word_emb = model.get_layer('word_emb').W.get_value()
-        aspect_emb = model.get_layer('aspect_emb').W.get_value()
+        word_emb = K.get_value(model.get_layer('word_emb').embeddings)
+        aspect_emb = K.get_value(model.get_layer('aspect_emb').W)
         word_emb = word_emb / np.linalg.norm(word_emb, axis=-1, keepdims=True)
         aspect_emb = aspect_emb / np.linalg.norm(aspect_emb, axis=-1, keepdims=True)
         aspect_file = codecs.open(out_dir + '/aspect.log', 'w', 'utf-8')
@@ -164,7 +162,7 @@ for ii in range(args.epochs):
             desc = aspect_emb[ind]
             sims = word_emb.dot(desc.T)
             ordered_words = np.argsort(sims)[::-1]
-            desc_list = [vocab_inv[w] for w in ordered_words[:100]]
+            desc_list = [vocab_inv[w] + ":" + str(sims[w])  for w in ordered_words[:100]]
             print('Aspect %d:' % ind)
             print(desc_list)
             aspect_file.write('Aspect %d:\n' % ind)

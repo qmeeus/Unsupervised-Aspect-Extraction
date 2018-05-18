@@ -16,8 +16,8 @@ class Attention(Layer):
                  b_constraint=None,
                  bias=True, **kwargs):
         """
-        Keras Layer that implements the Content Attention mechanism.
-        Supports Masking.
+            Keras Layer that implements an Content Attention mechanism.
+            Supports Masking.
         """
 
         self.supports_masking = True
@@ -79,6 +79,9 @@ class Attention(Layer):
     def get_output_shape_for(self, input_shape):
         return (input_shape[0][0], input_shape[0][1])
 
+    def compute_output_shape(self, input_shape):
+        return input_shape[0][0], input_shape[0][1]
+
 
 class WeightedSum(Layer):
     def __init__(self, **kwargs):
@@ -102,6 +105,9 @@ class WeightedSum(Layer):
 
     def compute_mask(self, x, mask=None):
         return None
+
+    def compute_output_shape(self, input_shape):
+        return self.get_output_shape_for(input_shape)
 
 
 class WeightedAspectEmb(Layer):
@@ -147,6 +153,9 @@ class WeightedAspectEmb(Layer):
     def call(self, x, mask=None):
         return K.dot(x, self.W)
 
+    def compute_output_shape(self, input_shape):
+        return self.get_output_shape_for(input_shape)
+
 
 class Average(Layer):
     def __init__(self, **kwargs):
@@ -165,6 +174,9 @@ class Average(Layer):
 
     def compute_mask(self, x, mask=None):
         return None
+
+    def compute_output_shape(self, input_shape):
+        return self.get_output_shape_for(input_shape)
 
 
 class MaxMargin(Layer):
@@ -196,3 +208,6 @@ class MaxMargin(Layer):
 
     def get_output_shape_for(self, input_shape):
         return (input_shape[0][0], 1)
+
+    def compute_output_shape(self, input_shape):
+        return input_shape[0][0], 1
