@@ -16,9 +16,7 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-###############################################################################################################################
-## Parse arguments
-#
+# Parse arguments
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-o", "--out-dir", dest="out_dir_path", type=str, metavar='<str>', required=True,
@@ -52,7 +50,7 @@ U.mkdir_p(out_dir)
 U.print_args(args)
 
 assert args.algorithm in {'rmsprop', 'sgd', 'adagrad', 'adadelta', 'adam', 'adamax'}
-assert args.domain in {'restaurant', 'beer', 'fashion'}
+# assert args.domain in {'restaurant', 'beer', 'fashion'}
 
 if args.seed > 0:
     np.random.seed(args.seed)
@@ -65,6 +63,7 @@ from keras.preprocessing import sequence
 import reader as dataset
 
 vocab, train_x, test_x, overall_maxlen = dataset.get_data(args.domain, vocab_size=args.vocab_size, maxlen=args.maxlen)
+
 train_x = sequence.pad_sequences(train_x, maxlen=overall_maxlen)
 test_x = sequence.pad_sequences(test_x, maxlen=overall_maxlen)
 
@@ -98,16 +97,13 @@ def negative_batch_generator(data, batch_size, neg_size):
         yield samples
 
 
-###############################################################################################################################
-## Optimizaer algorithm
-#
+# Optimizer algorithm --------------------------------------------------------------------------------------------------
 
 from optimizers import get_optimizer
 
 optimizer = get_optimizer(args)
 
-###############################################################################################################################
-## Building model
+# Building model -------------------------------------------------------------------------------------------------------
 
 from model import create_model
 import keras.backend as K
@@ -120,11 +116,11 @@ def max_margin_loss(y_true, y_pred):
 
 
 model = create_model(args, overall_maxlen, vocab)
+
 # freeze the word embedding layer
 model.get_layer('word_emb').trainable = False
 model.compile(optimizer=optimizer, loss=max_margin_loss, metrics=[max_margin_loss])
 
-###############################################################################################################################
 ## Training
 #
 from tqdm import tqdm
@@ -138,7 +134,7 @@ for w, ind in vocab.items():
 
 sen_gen = sentence_batch_generator(train_x, args.batch_size)
 neg_gen = negative_batch_generator(train_x, args.batch_size, args.neg_size)
-batches_per_epoch = len(train_x) / args.batch_size
+batches_per_epoch = len(train_x) // args.batch_size
 
 min_loss = float('inf')
 for ii in range(args.epochs):
@@ -146,8 +142,8 @@ for ii in range(args.epochs):
     loss, max_margin_loss = 0., 0.
 
     for b in tqdm(range(batches_per_epoch)):
-        sen_input = sen_gen.next()
-        neg_input = neg_gen.next()
+        sen_input = next(sen_gen)
+        neg_input = next(neg_gen)
 
         batch_loss, batch_max_margin_loss = model.train_on_batch([sen_input, neg_input], np.ones((args.batch_size, 1)))
         loss += batch_loss / batches_per_epoch

@@ -7,15 +7,15 @@ import keras.backend as K
 from keras.layers import Dense, Activation, Embedding, Input
 from keras.models import Model
 
+from custom_layers import Attention, Average, WeightedSum, WeightedAspectEmb, MaxMargin
 from w2v_emb_reader import W2VEmbReader as EmbReader
-from my_layers import Attention, Average, WeightedSum, WeightedAspectEmb, MaxMargin
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
 
-def create_model(args, maxlen, vocab)\
-        :
+def create_model(args, maxlen, vocab):
+
     def ortho_reg(weight_matrix):
         # orthogonal regularization for aspect embedding matrix
         w_n = weight_matrix / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(weight_matrix), axis=-1, keepdims=True)),
@@ -55,12 +55,14 @@ def create_model(args, maxlen, vocab)\
 
     # Word embedding and aspect embedding initialization
     if args.emb_path:
-
         emb_reader = EmbReader(args.emb_path, emb_dim=args.emb_dim)
         logger.info('Initializing word embedding matrix')
-        model.get_layer('word_emb').W.set_value(
-            emb_reader.get_emb_matrix_given_vocab(vocab, model.get_layer('word_emb').W.get_value()))
+        K.set_value(
+            model.get_layer('word_emb').embeddings,
+            emb_reader.get_emb_matrix_given_vocab(vocab, K.get_value(model.get_layer('word_emb').embeddings)))
         logger.info('Initializing aspect embedding matrix as centroid of kmean clusters')
-        model.get_layer('aspect_emb').W.set_value(emb_reader.get_aspect_matrix(args.aspect_size))
+        K.set_value(
+            model.get_layer('aspect_emb').W,
+            emb_reader.get_aspect_matrix(args.aspect_size))
 
     return model
