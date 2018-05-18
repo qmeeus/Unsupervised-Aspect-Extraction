@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 import keras.backend as K
 from keras import constraints
 from keras import initializers
@@ -56,7 +59,7 @@ class Attention(Layer):
         mask = mask[0]
 
         y = K.transpose(K.dot(self.W, K.transpose(y)))
-        y = K.expand_dims(y, dim=-2)
+        y = K.expand_dims(y, axis=-2)
         y = K.repeat_elements(y, self.steps, axis=1)
         eij = K.sum(x * y, axis=-1)
 
@@ -181,7 +184,7 @@ class MaxMargin(Layer):
 
         pos = K.sum(z_s * r_s, axis=-1, keepdims=True)
         pos = K.repeat_elements(pos, steps, axis=-1)
-        r_s = K.expand_dims(r_s, dim=-2)
+        r_s = K.expand_dims(r_s, axis=-2)
         r_s = K.repeat_elements(r_s, steps, axis=1)
         neg = K.sum(z_n * r_s, axis=-1)
 

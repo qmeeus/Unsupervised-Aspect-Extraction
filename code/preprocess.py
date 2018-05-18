@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -45,10 +48,17 @@ def preprocess_test(domain):
 def preprocess(domain):
     print('\t' + domain + ' train set ...')
     preprocess_train(domain)
-    print('\t' + domain + ' test set ...')
-    preprocess_test(domain)
+    # print('\t' + domain + ' test set ...')
+    # preprocess_test(domain)
 
 
-print('Preprocessing raw review sentences ...')
-preprocess('restaurant')
-preprocess('beer')
+if __name__ == "__main__":
+    print('Preprocessing raw review sentences ...')
+    # preprocess('restaurant')
+    # preprocess('beer')
+    preprocess("fashion")
+
+    import pandas as pd
+
+    df = pd.read_csv("../datasets/fashion/final_dataset.csv")
+    df[["article"]].to_csv("../datasets/fashion/train.txt", header=False, index=None)

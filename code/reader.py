@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 import codecs
 import operator
 import re
@@ -10,7 +13,7 @@ def is_number(token):
 
 
 def create_vocab(domain, maxlen=0, vocab_size=0):
-    assert domain in {'restaurant', 'beer'}
+    # assert domain in {'restaurant', 'beer', "fashion"}
     source = '../preprocessed_data/' + domain + '/train.txt'
 
     total_words, unique_words = 0, 0
@@ -60,7 +63,7 @@ def create_vocab(domain, maxlen=0, vocab_size=0):
 
 
 def read_dataset(domain, phase, vocab, maxlen):
-    assert domain in {'restaurant', 'beer'}
+    # assert domain in {'restaurant', 'beer'}
     assert phase in {'train', 'test'}
 
     source = '../preprocessed_data/' + domain + '/' + phase + '.txt'

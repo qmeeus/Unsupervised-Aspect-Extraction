@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 import gensim
 import codecs
 
 
-class MySentences(object):
+class Sentences(object):
     def __init__(self, filename):
         self.filename = filename
 
@@ -14,11 +17,13 @@ class MySentences(object):
 def main(domain):
     source = '../preprocessed_data/%s/train.txt' % domain
     model_file = '../preprocessed_data/%s/w2v_embedding' % domain
-    sentences = MySentences(source)
-    model = gensim.models.Word2Vec(sentences, size=200, window=5, min_count=10, workers=4)
+    sentences = Sentences(source)
+    model = gensim.models.Word2Vec(sentences, size=200, window=5, min_count=10, workers=6, sg=1, iter=2)
     model.save(model_file)
+    print(model.wv.most_similar(positive=["chinese"]))
 
 
 print('Pre-training word embeddings ...')
-main('restaurant')
-main('beer')
+# main('restaurant')
+# main('beer')
+main("fashion")

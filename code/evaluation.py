@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 import argparse
 import codecs
 
@@ -40,7 +43,6 @@ out_dir = args.out_dir_path + '/' + args.domain
 U.print_args(args)
 
 assert args.algorithm in {'rmsprop', 'sgd', 'adagrad', 'adadelta', 'adam', 'adamax'}
-assert args.domain in {'restaurant', 'beer'}
 
 from keras.preprocessing import sequence
 import reader as dataset
