@@ -21,7 +21,7 @@ parser.add_argument("-o", "--out-dir", dest="out_dir_path", type=str, metavar='<
                     help="The path to the output directory")
 parser.add_argument("-e", "--embdim", dest="emb_dim", type=int, metavar='<int>', default=200,
                     help="Embeddings dimension (default=200)")
-parser.add_argument("-b", "--batch-size", dest="batch_size", type=int, metavar='<int>', default=25,
+parser.add_argument("-b", "--batch-size", dest="batch_size", type=int, metavar='<int>', default=50,
                     help="Batch size (default=50)")
 parser.add_argument("-v", "--vocab-size", dest="vocab_size", type=int, metavar='<int>', default=9000,
                     help="Vocab size. '0' means no limit (default=9000)")
