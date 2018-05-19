@@ -188,9 +188,12 @@ class MaxMargin(Layer):
         z_n = input_tensor[1]
         r_s = input_tensor[2]
 
-        z_s = z_s / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(z_s), axis=-1, keepdims=True)), K.floatx())
-        z_n = z_n / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(z_n), axis=-1, keepdims=True)), K.floatx())
-        r_s = r_s / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(r_s), axis=-1, keepdims=True)), K.floatx())
+        # z_s = z_s / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(z_s), axis=-1, keepdims=True)), K.floatx())
+        # z_n = z_n / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(z_n), axis=-1, keepdims=True)), K.floatx())
+        # r_s = r_s / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(r_s), axis=-1, keepdims=True)), K.floatx())
+        z_s = K.l2_normalize(z_s, axis=-1)
+        z_n = K.l2_normalize(z_n, axis=-1)
+        r_s = K.l2_normalize(r_s, axis=-1)
 
         steps = z_n.shape[1]
 
