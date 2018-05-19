@@ -135,6 +135,7 @@ neg_gen = negative_batch_generator(train_x, args.batch_size, args.neg_size)
 batches_per_epoch = len(train_x) // args.batch_size
 
 min_loss = float('inf')
+
 for ii in range(args.epochs):
     t0 = time()
     loss, max_margin_loss = 0., 0.
@@ -151,6 +152,7 @@ for ii in range(args.epochs):
             print(neg_input.shape, neg_input)
 
             print()
+            quit()
 
         loss += batch_loss / batches_per_epoch
         max_margin_loss += batch_max_margin_loss / batches_per_epoch
@@ -158,6 +160,7 @@ for ii in range(args.epochs):
     tr_time = time() - t0
 
     if loss < min_loss:
+
         min_loss = loss
         word_emb = K.get_value(model.get_layer('word_emb').embeddings)
         aspect_emb = K.get_value(model.get_layer('aspect_emb').W)
