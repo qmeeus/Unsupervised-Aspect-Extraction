@@ -127,6 +127,7 @@ logger.info(
     '--------------------------------------------------------------------------------------------------------------------------')
 
 vocab_inv = {}
+
 for w, ind in vocab.items():
     vocab_inv[ind] = w
 
@@ -175,9 +176,9 @@ for ii in range(args.epochs):
             desc = aspect_emb[ind]
             sims = word_emb.dot(desc.T)
             ordered_words = np.argsort(sims)[::-1]
-            desc_list = [vocab_inv[w] + ":" + str(sims[w])  for w in ordered_words[:100]]
+            desc_list = [vocab_inv[w] + ":" + str(sims[w]) for w in ordered_words[:100]]
             print('Aspect %d:' % ind)
-            print(desc_list)
+            print(str(desc_list).encode("ascii"))
             aspect_file.write('Aspect %d:\n' % ind)
             aspect_file.write(' '.join(desc_list) + '\n\n')
 
