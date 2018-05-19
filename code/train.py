@@ -134,6 +134,8 @@ sen_gen = sentence_batch_generator(train_x, args.batch_size)
 neg_gen = negative_batch_generator(train_x, args.batch_size, args.neg_size)
 batches_per_epoch = len(train_x) // args.batch_size
 
+print("Batches per epoch", batches_per_epoch)
+
 min_loss = float('inf')
 
 for ii in range(args.epochs):
