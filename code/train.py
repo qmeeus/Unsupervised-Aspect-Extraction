@@ -71,12 +71,12 @@ print('Length of vocab: ', len(vocab))
 
 
 def sentence_batch_generator(data, batch_size):
-    n_batch = len(data) / batch_size
+    n_batch = len(data) // batch_size
     batch_count = 0
     np.random.shuffle(data)
 
     while True:
-        if batch_count == n_batch:
+        if batch_count >= n_batch:
             np.random.shuffle(data)
             batch_count = 0
 
@@ -143,7 +143,15 @@ for ii in range(args.epochs):
         sen_input = next(sen_gen)
         neg_input = next(neg_gen)
 
-        batch_loss, batch_max_margin_loss = model.train_on_batch([sen_input, neg_input], np.ones((args.batch_size, 1)))
+        try:
+            batch_loss, batch_max_margin_loss = model.train_on_batch([sen_input, neg_input], np.ones((args.batch_size, 1)))
+        except Exception as e:
+            print(e)
+            print(sen_input.shape, sen_input)
+            print(neg_input.shape, neg_input)
+
+            print()
+
         loss += batch_loss / batches_per_epoch
         max_margin_loss += batch_max_margin_loss / batches_per_epoch
 
