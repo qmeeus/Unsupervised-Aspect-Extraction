@@ -1,6 +1,8 @@
 # Unsupervised Aspect Extraction
 Codes and Dataset for ACL2017 paper ‘‘An unsupervised neural attention model for aspect extraction’’. [(pdf)](http://aclweb.org/anthology/P/P17/P17-1036.pdf)
 
+THIS FORK: beautifications + extra adaptation for Russian language
+
 ## Data
 You can find the pre-processed datasets and the pre-trained word embeddings in [[Download]](https://drive.google.com/open?id=1L4LRi3BWoCqJt5h45J2GIAW9eP_zjiNc). The zip file should be decompressed and put in the main folder.
 
