@@ -139,20 +139,20 @@ for c in range(len(test_x)):
         att_out.write(words[j] + ' ' + str(round(weights[j], 3)) + '\n')
 
 
+# #####################################################
+# # Uncomment the below part for F scores
+# #####################################################
 
-######################################################
-# Uncomment the below part for F scores
-######################################################
-
-## cluster_map need to be specified manually according to the top words in each inferred aspect (save in aspect.log)
-
-# map for the pre-trained restaurant model (under pre_trained_model/restaurant)
-# cluster_map = {0: 'Food', 1: 'Miscellaneous', 2: 'Miscellaneous', 3: 'Food',
-#            4: 'Miscellaneous', 5: 'Food', 6:'Price',  7: 'Miscellaneous', 8: 'Staff', 
-#            9: 'Food', 10: 'Food', 11: 'Anecdotes', 
-#            12: 'Ambience', 13: 'Staff'}
-
-
-# print '--- Results on %s domain ---' % (args.domain)
+# # cluster_map need to be specified manually according to the top words in each inferred aspect (save in aspect.log)
+#
+# # map for the pre-trained restaurant model (under pre_trained_model/restaurant)
+# cluster_map = {
+#     0: 'Food', 1: 'Miscellaneous', 2: 'Miscellaneous', 3: 'Food',
+#     4: 'Miscellaneous', 5: 'Food', 6: 'Price',  7: 'Miscellaneous', 8: 'Staff',
+#     9: 'Food', 10: 'Food', 11: 'Anecdotes', 12: 'Ambience', 13: 'Staff'
+# }
+#
+#
+# print('--- Results on %s domain ---' % (args.domain))
 # test_labels = '../preprocessed_data/%s/test_label.txt' % (args.domain)
 # prediction(test_labels, aspect_probs, cluster_map, domain=args.domain)

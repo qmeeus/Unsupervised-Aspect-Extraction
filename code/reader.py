@@ -5,7 +5,7 @@ import codecs
 import operator
 import re
 
-num_regex = re.compile('^[+-]?[0-9]+\.?[0-9]*$')
+num_regex = re.compile(r'^[+-]?[0-9]+\.?[0-9]*$')
 
 
 def is_number(token):
@@ -13,12 +13,11 @@ def is_number(token):
 
 
 def create_vocab(domain, maxlen=0, vocab_size=0):
-    # assert domain in {'restaurant', 'beer', "fashion"}
+    assert domain in {'restaurant', 'beer'}
     source = '../preprocessed_data/' + domain + '/train.txt'
 
     total_words, unique_words = 0, 0
     word_freqs = {}
-    top = 0
 
     fin = codecs.open(source, 'r', 'utf-8')
     for line in fin:
