@@ -14,8 +14,8 @@ def create_model(args, maxlen, vocab):
     def ortho_reg(weight_matrix):
         ### orthogonal regularization for aspect embedding matrix ###
         w_n = weight_matrix / K.cast(K.epsilon() + K.sqrt(K.sum(K.square(weight_matrix), axis=-1, keepdims=True)), K.floatx())
-        reg = K.sum(K.square(K.dot(w_n, K.transpose(w_n)) - K.eye(w_n.shape[0].eval())))
-        return args.ortho_reg*reg
+        reg = K.sum(K.square(K.dot(w_n, K.transpose(w_n)) - K.eye(int(w_n.shape[0]))))
+        return args.ortho_reg * reg
 
     vocab_size = len(vocab)
 
@@ -48,20 +48,16 @@ def create_model(args, maxlen, vocab):
 
     ### Word embedding and aspect embedding initialization ######
     if args.emb_path:
+
         from w2vEmbReader import W2VEmbReader as EmbReader
+
         emb_reader = EmbReader(args.emb_path, emb_dim=args.emb_dim)
         logger.info('Initializing word embedding matrix')
-        model.get_layer('word_emb').W.set_value(emb_reader.get_emb_matrix_given_vocab(vocab, model.get_layer('word_emb').W.get_value()))
+        embedding_layer = model.get_layer("word_emb")
+        W = embedding_layer.get_weights()[0]
+        embedding_layer.set_weights([emb_reader.get_emb_matrix_given_vocab(vocab, W)])
         logger.info('Initializing aspect embedding matrix as centroid of kmean clusters')
-        model.get_layer('aspect_emb').W.set_value(emb_reader.get_aspect_matrix(args.aspect_size))
+        aspect_layer = model.get_layer("aspect_emb")
+        aspect_layer.set_weights([emb_reader.get_aspect_matrix(args.aspect_size)])
 
     return model
-
-
-
-    
-
-
-
-
-

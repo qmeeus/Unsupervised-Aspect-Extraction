@@ -1,10 +1,10 @@
-import codecs
 import logging
 import numpy as np
 import gensim
 from sklearn.cluster import KMeans
-import pickle  
+import pickle
 
+from word2vec import MySentences
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -20,10 +20,18 @@ class W2VEmbReader:
        
         model = gensim.models.Word2Vec.load(emb_path)
         self.emb_dim = emb_dim
-        for word in model.vocab:
-            self.embeddings[word] = list(model[word])
-            emb_matrix.append(list(model[word]))
 
+        sentences = MySentences("/".join(emb_path.split("/")[:-1] + ["train.txt"]))
+        model.vocabulary.scan_vocab(sentences)
+
+        for word in model.vocabulary.raw_vocab:
+
+            try:
+                self.embeddings[word] = list(model[word])
+                emb_matrix.append(list(model[word]))
+            except KeyError:
+                pass
+        
         if emb_dim != None:
             assert self.emb_dim == len(self.embeddings['nice'])
             
@@ -41,7 +49,8 @@ class W2VEmbReader:
     
     def get_emb_matrix_given_vocab(self, vocab, emb_matrix):
         counter = 0.
-        for word, index in vocab.iteritems():
+
+        for word, index in vocab.items():
             try:
                 emb_matrix[index] = self.embeddings[word]
                 counter += 1
@@ -65,7 +74,3 @@ class W2VEmbReader:
     
     def get_emb_dim(self):
         return self.emb_dim
-    
-    
-    
-    
