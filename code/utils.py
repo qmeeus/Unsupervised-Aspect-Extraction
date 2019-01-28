@@ -23,14 +23,8 @@ def set_logger(out_dir=None):
 #-----------------------------------------------------------------------------------------------------------#
 
 def mkdir_p(path):
-	if path == '':
-		return
-	try:
-		os.makedirs(path)
-	except OSError as exc: # Python >2.5
-		if exc.errno == errno.EEXIST and os.path.isdir(path):
-			pass
-		else: raise
+	if path:
+		os.makedirs(path, exist_ok=True)
 
 def get_root_dir():
 	return os.path.dirname(sys.argv[0])
