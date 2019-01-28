@@ -18,10 +18,17 @@ def main(domain):
     os.makedirs(output_dir, exist_ok=True)
     model_file = output_dir + '/w2v_embedding'
     sentences = MySentences(source)
-    model = gensim.models.Word2Vec(sentences, size=200, window=5, min_count=10, workers=4)
+    model = gensim.models.Word2Vec(size=200, window=5, min_count=10, workers=4)
+    model.build_vocab(sentences)  # TODO: is it necessary?
     model.save(model_file)
 
-
-print('Pre-training word embeddings ...')
-main('restaurant')
-main('beer')
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser("Train Word2Vec model")
+    parser.add_argument("--dataset", choices=["restaurant", "beer"])
+    args = parser.parse_args()
+    print('Pre-training word embeddings ...')
+    if not hasattr(args, "dataset") or args.dataset == "restaurant":
+        main('restaurant')
+    if not hasattr(args, "dataset") or args.dataset == "beer":
+        main('beer')
