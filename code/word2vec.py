@@ -1,7 +1,6 @@
-from __future__ import print_function
 import gensim
 import os
-# import codecs
+
 
 class MySentences(object):
     def __init__(self, filename):
