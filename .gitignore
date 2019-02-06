@@ -5,3 +5,4 @@ venv
 preprocessed_data
 datasets
 .vscode/
+output_dir/
