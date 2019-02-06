@@ -1,4 +1,7 @@
-.vscode
-__pycache__
-datasets
+*~
+.idea
+*.pyc
+venv
 preprocessed_data
+datasets
+.vscode/

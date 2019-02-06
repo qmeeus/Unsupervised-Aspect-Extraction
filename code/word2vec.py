@@ -1,8 +1,12 @@
+#!/usr/bin/env python
+#  -*- coding: utf-8  -*-
+
 import gensim
 import os
 
 
-class MySentences(object):
+
+class Sentences(object):
     def __init__(self, filename):
         self.filename = filename
 
@@ -13,22 +17,14 @@ class MySentences(object):
 
 
 def main(domain):
-    source = '../datasets/%s/train.txt' % (domain)
-    output_dir = "../preprocessed_data/%s" % (domain)
-    os.makedirs(output_dir, exist_ok=True)
-    model_file = output_dir + '/w2v_embedding'
-    sentences = MySentences(source)
-    model = gensim.models.Word2Vec(size=200, window=5, min_count=10, workers=4)
-    model.build_vocab(sentences)  # TODO: is it necessary?
+    source = '../preprocessed_data/%s/train.txt' % domain
+    model_file = '../preprocessed_data/%s/w2v_embedding' % domain
+    sentences = Sentences(source)
+    model = gensim.models.Word2Vec(sentences, size=200, window=5, min_count=10, workers=4, sg=1, iter=2)
     model.save(model_file)
 
-if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser("Train Word2Vec model")
-    parser.add_argument("--dataset", choices=["restaurant", "beer"])
-    args = parser.parse_args()
+
+if __name__ == "__main__":
     print('Pre-training word embeddings ...')
-    if not hasattr(args, "dataset") or args.dataset == "restaurant":
-        main('restaurant')
-    if not hasattr(args, "dataset") or args.dataset == "beer":
-        main('beer')
+    main('restaurant')
+    main('beer')

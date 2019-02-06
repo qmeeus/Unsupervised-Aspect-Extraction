@@ -1,10 +1,12 @@
 # Unsupervised Aspect Extraction
 Codes and Dataset for ACL2017 paper ‘‘An unsupervised neural attention model for aspect extraction’’. [(pdf)](http://aclweb.org/anthology/P/P17/P17-1036.pdf)
 
+THIS FORK: Adoption to TensorFlow backend, Python 3, recent dependency versions
+
 ## Data
 You can find the pre-processed datasets and the pre-trained word embeddings in [[Download]](https://drive.google.com/open?id=1L4LRi3BWoCqJt5h45J2GIAW9eP_zjiNc). The zip file should be decompressed and put in the main folder.
 
-You can also download the original datasets of Restaurant domain and Beer domain in [[Download]](https://drive.google.com/open?id=1qzbTiJ2IL5ATZYNMp2DRkHvbFYsnOVAQ). For preprocessing, put the decompressed zip file in the main folder and run 
+You can also download the original datasets of Restaurant domain and Beer domain in [[Download]](https://drive.google.com/open?id=1qzbTiJ2IL5ATZYNMp2DRkHvbFYsnOVAQ). For preprocessing, put the decompressed zip file in the main folder and run
 ```
 python preprocess.py
 python word2vec.py
@@ -14,7 +16,7 @@ respectively in code/ . The preprocessed files and trained word embeddings for e
 ## Train
 Under code/ and type the following command for training:
 ```
-THEANO_FLAGS="device=gpu0,floatX=float32" python train.py \
+python3 train.py \
 --emb ../preprocessed_data/$domain/w2v_embedding \
 --domain $domain \
 -o output_dir \
@@ -26,7 +28,7 @@ After training, two output files will be saved in code/output_dir/$domain/: 1) *
 ## Evaluation
 Under code/ and type the following command:
 ```
-THEANO_FLAGS="device=gpu0,floatX=float32" python evaluation.py \
+python3 evaluation.py \
 --domain $domain \
 -o output_dir \
 ```
@@ -40,17 +42,27 @@ One example of trained model for the restaurant domain has been put in pre_train
 
 ## Dependencies
 
-python 2
+Python 3.6
 
-* keras 1.2.1
-* theano 0.9.0
-* numpy 1.13.3
+* keras 2.2
+* tensorflow 1.9
+* numpy 1.15
+* gensim 3.5
 
-See also requirements.txt
-You can install prerequirements, using the following command.
+Other versions, e.g. slightly older/newer Python 3, may well work, just try it.
+
+You can install all dependencies with the following command:
 
 ```
 pip install -r requirements.txt
+```
+
+If you want to pre-process the data yourself, you'll also need NLTK and some of its data, which you can install like this from the Python 3 CLI:
+
+```python3
+import nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
 ```
 
 ## Cite
@@ -66,8 +78,3 @@ If you use the code, please cite the following paper:
   publisher = {Association for Computational Linguistics}
 }
 ```
-
-
-
-
-

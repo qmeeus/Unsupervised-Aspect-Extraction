@@ -1,7 +1,8 @@
-keras==1.2.1
-theano==0.9.0
-numpy==1.13.3
+keras<2.3
+tensorflow<1.10
+gensim<3.6
+numpy<1.16
 scikit-learn
-gensim==0.12.4
 tqdm
 h5py
+nltk  # only for preprocessing
