@@ -1,0 +1,25 @@
+FROM tensorflow/tensorflow:nightly-devel-gpu-py3
+
+ENV DEBIAN_FRONTEND=noninteractive
+COPY requirements.txt ./
+RUN apt update && \
+    apt-get install python3-matplotlib -y && \
+	pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+ARG user_id
+RUN useradd --uid $user_id --group video --shell /bin/bash --create-home patrick
+USER patrick
+
+WORKDIR /home/patrick
+RUN mkdir /home/patrick/code
+WORKDIR /home/patrick/code
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+VOLUME ["/home/patrick/code"]
+
+COPY --chown=patrick:users docker-entrypoint.sh /home/patrick
+RUN chmod 755 ~/docker-entrypoint.sh
+ENTRYPOINT ["/home/patrick/docker-entrypoint.sh"]

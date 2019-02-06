@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
-
+import codecs
 
 def parse_sentence(line):
     lmtzr = WordNetLemmatizer()
