@@ -1,8 +1,7 @@
-keras<2.3
-tensorflow<1.10
-gensim<3.6
-numpy<1.16
+keras
+gensim
+numpy
 scikit-learn
 tqdm
 h5py
-nltk  # only for preprocessing
+nltk
